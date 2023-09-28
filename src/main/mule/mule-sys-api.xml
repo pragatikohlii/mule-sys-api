@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0bddf744-53aa-479f-b911-163caa3ae419" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule-sys-apiFlow" doc:id="8befdf0e-ea8c-41ef-9b07-d86fae6fb072" >
+		<http:listener doc:name="Listener" doc:id="efbb0f90-7fd9-48ed-9214-6878dd50fadd" config-ref="HTTP_Listener_config" path="system-api"/>
+		<logger level="INFO" doc:name="Start Log" doc:id="28ff4471-3d89-4e88-a53a-7eec75c3458c" message="Start Log"/>
+		<ee:transform doc:name="Output Response" doc:id="f23cd76a-ac61-4ff2-a722-070156af8a32" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"message" : "Mule system API"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End Log" doc:id="3de256f3-8836-4241-8e85-79b96320d75e" message="End Log"/>
+	</flow>
+</mule>
